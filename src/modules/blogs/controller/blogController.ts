@@ -11,7 +11,7 @@ import {
 import multer from "multer";
 import { blogsModel } from "../../../database/models/blogSchema";
 
-const upload = multer();
+const upload = multer({ dest: "uploads/" });
 
 const creatingBlog = async (req: Request, res: Response) => {
   try {
