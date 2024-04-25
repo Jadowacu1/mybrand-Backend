@@ -1,3 +1,4 @@
+import { any } from "joi";
 import { blogsModel } from "../../../database/models/blogSchema";
 import { FilterQuery, UpdateQuery, UpdateWriteOpResult } from "mongoose";
 const createBlog = async (blogPost: any) => {
@@ -17,4 +18,7 @@ const deleteTask = async (blogId: string) => {
   return await blogsModel.deleteOne({ _id: blogId });
 };
 
-export { createBlog, readBlogs, deleteTask, readSingle };
+const updateBlog = async (blogId: string, body: any) => {
+  return blogsModel.updateOne({ _id: blogId }, body);
+};
+export { createBlog, readBlogs, deleteTask, readSingle, updateBlog };

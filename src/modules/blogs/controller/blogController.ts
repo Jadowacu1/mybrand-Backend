@@ -7,6 +7,7 @@ import {
   readBlogs,
   deleteTask,
   readSingle,
+  updateBlog,
 } from "../repository/blogsRepo";
 import multer from "multer";
 import { blogsModel } from "../../../database/models/blogSchema";
@@ -60,35 +61,6 @@ const deletingBlog = async (req: Request, res: Response) => {
   }
 };
 
-const updatingBlog = async (req: Request, res: Response) => {
-  upload.single("image")(req, res, async (err: any) => {
-    if (err) {
-      console.error("File upload error:", err);
-      return res.status(400).json({ message: "File upload failed" });
-    }
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
-    try {
-      const data = await cloudinary.uploader.upload(req.file.path);
-      const content = req.body.content;
-      const title = req.body.title;
-      const imageUrl = data.secure_url;
-      const { blogId } = req.params;
-      const filter: FilterQuery<any> = { _id: blogId };
-      const update: UpdateQuery<any> = { $set: { title, content, imageUrl } };
-      const result = await blogsModel.updateOne(filter, update);
-      if (result.modifiedCount > 0) {
-        return res.status(200).json("Blog Updated");
-      } else {
-        return res.status(400).json("Failed");
-      }
-    } catch (uploadError) {
-      return res.status(500).json({ message: "Image upload failed" });
-    }
-  });
-};
-
 const readingSingle = async (req: Request, res: Response) => {
   const { blogId } = req.params;
   const result = await readSingle(blogId);
@@ -96,6 +68,43 @@ const readingSingle = async (req: Request, res: Response) => {
     return res.status(200).json(result);
   } else {
     return res.status(404).json("Not found");
+  }
+};
+
+const updatingBlog = async (req: Request, res: Response) => {
+  try {
+    upload.single("image")(req, res, async (err: any) => {
+      if (err) {
+        console.error("File upload error:", err);
+        return res.status(400).json({ message: "File upload failed" });
+      }
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+      try {
+        const result = await cloudinary.uploader.upload(req.file.path);
+
+        const title = req.body.title;
+        const content = req.body.content;
+        const imageUrl = result.secure_url;
+        const { blogId } = req.params;
+        const savedBlog = await blogsModel.updateOne(
+          { _id: blogId },
+          { $set: { title: title, content: content, imageUrl: imageUrl } }
+        );
+
+        if (savedBlog.modifiedCount === 1) {
+          return res.status(201).json("Blog is updated");
+        } else {
+          return res.status(201).json("something went wrong");
+        }
+      } catch (uploadError) {
+        console.error("Error uploading image to Cloudinary:", uploadError);
+        res.status(500).json({ message: "Image upload failed" });
+      }
+    });
+  } catch (err) {
+    console.error(err);
   }
 };
 export {
