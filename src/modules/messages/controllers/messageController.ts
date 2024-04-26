@@ -49,13 +49,13 @@ const recordMessage = async (req: Request, res: Response) => {
           // send mail with defined transport object
           const info = await transporter.sendMail({
             from: {
-              name: `${firstName}`,
+              name: `${firstName} ${lastName}`,
               address: `${email}`,
             },
             to: "jadowacu@gmail.com", // list of receivers
             subject: "My Brand FeedBack", // Subject line
-            // text: , // plain text body
-            html: `<b>${message}</b>`, // html body
+            text:  `<b>${message}</b>`
+            
           });
           console.log("Message sent: %s", info.messageId);
         }
