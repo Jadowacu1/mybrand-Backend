@@ -54,7 +54,7 @@ const recordMessage = async (req: Request, res: Response) => {
             },
             to: "jadowacu@gmail.com", // list of receivers
             subject: "My Brand FeedBack", // Subject line
-            text:  `<b>${message}</b>`
+            text:  ${message}
             
           });
           console.log("Message sent: %s", info.messageId);
