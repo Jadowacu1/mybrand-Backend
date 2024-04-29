@@ -10,9 +10,6 @@ const readBlogs = async () => {
 const readSingle = async (blogId: string) => {
   return await blogsModel.findOne({ _id: blogId });
 };
-// const updateBlog = async (filter: FilterQuery, update: UpdateQuery) => {
-// return await blogsModel.updateOne(filter, update);
-// };
 
 const deleteTask = async (blogId: string) => {
   return await blogsModel.deleteOne({ _id: blogId });

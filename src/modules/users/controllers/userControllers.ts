@@ -40,29 +40,30 @@ const createUser = async (req: Request, res: Response) => {
 };
 
 const login = async (req: Request, res: Response) => {
-  try {
-    const { email, password } = req.body;
-    const fetchUser = await exstingUser(email);
-    if (!fetchUser) {
-      return res.status(400).json("Email or Password is incorrect");
-    }
-    if (fetchUser) {
-      const fetchedPassword = fetchUser.Password;
-      const role = fetchUser.role;
-      bycrpt.compare(password, fetchedPassword, (err, results) => {
-        if (results) {
-          const token = jwt.sign({ email, password, role }, TOKEN_SECRET, {
-            expiresIn: 60 * 120,
-          });
-          return res.json(token);
-        } else {
-          return res.status(400).json("Email or Password is incorrect");
-        }
-      });
-    }
-  } catch (error) {
-    return res.status(500).json({ error: "Internal Server Error" });
+  // try {
+  const { email, password } = req.body;
+  const fetchUser = await exstingUser(email);
+  if (!fetchUser) {
+    return res.status(400).json("Email or Password is incorrect");
   }
+  if (fetchUser) {
+    const fetchedPassword = fetchUser.Password;
+    const role = fetchUser.role;
+    bycrpt.compare(password, fetchedPassword, (err, results) => {
+      if (results) {
+        const token = jwt.sign({ email, password, role }, TOKEN_SECRET, {
+          expiresIn: 60 * 120,
+        });
+        return res.json(token);
+      } else {
+        return res.status(400).json("Email or Password is incorrect");
+      }
+    });
+  }
+  // }
+  //  catch (error) {
+  //   return res.status(500).json({ error: "Internal Server Error" });
+  // }
 };
 
 const viewUsers = async (req: Request, res: Response) => {

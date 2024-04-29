@@ -14,5 +14,4 @@ blogsRouter.get("/read", readingBlogs);
 blogsRouter.get("/read/:blogId", readingSingle);
 blogsRouter.delete("/delete/:blogId", validateToken, deletingBlog);
 blogsRouter.put("/edit/:blogId", validateToken, updatingBlog);
-
 export default blogsRouter;

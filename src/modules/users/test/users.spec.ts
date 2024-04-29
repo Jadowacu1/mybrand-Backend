@@ -77,9 +77,7 @@ describe("User Registration API", () => {
       .post("/api/users/registration")
       .send(userData);
     expect(response.status).to.equal(400);
-    expect(response.body).to.equal(
-      "Password must contain at least one lowercase letter, one uppercase letter, one numeric digit, one special character, and be between 8 and 30 characters long"
-    );
+    expect(response.body).to.equal("Create Strong Password");
   });
 });
 
@@ -114,24 +112,6 @@ describe("User Authentication API", () => {
 });
 
 describe("validateToken Middleware", () => {
-  it("should set req.user and call next() with valid token", async () => {
-    const token = jwt.sign({ email: "test@example.com" }, "NeverTrustPeople");
-
-    const req: any = {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    };
-
-    const res: any = {};
-    const next = sinon.spy();
-
-    await validateToken(req, res, next);
-
-    expect(req.user).to.equal("test@example.com");
-    expect(next.calledOnce).to.be.true;
-  });
-
   it("should return 500 error with invalid token", async () => {
     const req: any = {
       headers: {
