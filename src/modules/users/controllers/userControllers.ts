@@ -59,7 +59,7 @@ const createUser = async (req: Request, res: Response) => {
       const info = await transporter.sendMail({
         from: {
           name: `JadoForge`,
-          address: `${email}`,
+          // address: `${email}`,
         },
         to: `${email}`, // list of receivers
         subject: "Email Verification Code", // Subject line
