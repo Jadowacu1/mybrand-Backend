@@ -23,37 +23,14 @@ const listBlogs = {
   },
 };
 
-const getOneBlog = {
-  tags: ["Blog"],
-  description: "Return a blog with a given ID",
-  responses: {
-    200: {
-      description: "Successful operation",
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              count: { type: "integer" },
-              blogs: { type: "array", items: { type: "string" } },
-            },
-            example: {
-              count: 0,
-              blogs: [],
-            },
-          },
-        },
-      },
-    },
-  },
-};
 const createBlog = {
   tags: ["Blog"],
   description: "Create a new blog post",
   requestBody: {
     required: true,
     content: {
-      "application/json": {
+      "multipart/form-data": {
+        // Change content type to "multipart/form-data"
         schema: {
           type: "object",
           properties: {
@@ -69,7 +46,8 @@ const createBlog = {
             },
             image: {
               type: "string",
-              description: "URL of the thumbnail image for the blog post",
+              format: "binary", // Use "binary" format for file upload
+              description: "Thumbnail image for the blog post",
             },
           },
           required: ["title", "content", "image"],
@@ -91,15 +69,15 @@ const createBlog = {
               },
               title: {
                 type: "string",
-                example: "Blog Post Title",
+                // example: "Blog Post Title",
               },
               content: {
                 type: "string",
-                example: "Blog Post Content",
+                // example: "Blog Post Content",
               },
               image: {
                 type: "string",
-                example: "https://example.com/thumbnail.jpg",
+                // example: "https://example.com/thumbnail.jpg",
               },
             },
           },
@@ -171,11 +149,6 @@ const updateBlog = {
       description: "Blog post not found",
     },
   },
-  security: [
-    {
-      tokenAuth: [],
-    },
-  ],
 };
 
 const deleteBlog = {
@@ -193,11 +166,7 @@ const deleteBlog = {
       },
     },
   ],
-  security: [
-    {
-      BearerAuth: [],
-    },
-  ],
+
   responses: {
     "204": {
       description: "Blog post deleted successfully",
@@ -219,17 +188,10 @@ export const BlogDocs = {
     },
   },
 
-  "/api/blog/create-blog": {
-    get: {
+  "/api/blogs/create": {
+    post: {
       summary: "Create new blog",
       ...createBlog,
-    },
-  },
-
-  "/api/blogs/read/662e3ddc10dec28a11af342c": {
-    get: {
-      summary: "Get a single blog post by ID",
-      ...getOneBlog,
     },
   },
 
@@ -239,7 +201,7 @@ export const BlogDocs = {
     },
   },
 
-  "/api/blogs/delete/": {
+  "/api/blogs/delete/662eb7848ac096f9884e3047": {
     delete: {
       ...deleteBlog,
     },
