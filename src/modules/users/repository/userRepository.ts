@@ -18,14 +18,14 @@ const deletingUser = async (userId: string) => {
   return await usersModel.deleteOne({ _id: userId });
 };
 
-const verify = async (otp: String, email: String) => {
-  return usersModel.find({ email: email, otp: otp });
+const verify = async (email: String, otp: String) => {
+  return usersModel.findOne({ email: email, otp: otp });
+};
+const verifiedAcc = async (email: String) => {
+  return usersModel.findOne({ email: email, verified: "yes" });
 };
 const updateStatus = async (email: string, otp: string) => {
-  return usersModel.updateOne(
-    { email: email, otp: otp },
-    { $set: { verified: "yes" } }
-  );
+  return usersModel.updateOne({ email: email }, { $set: { verified: "yes" } });
 };
 export {
   insertIntoDb,
@@ -34,4 +34,5 @@ export {
   deletingUser,
   verify,
   updateStatus,
+  verifiedAcc,
 };
