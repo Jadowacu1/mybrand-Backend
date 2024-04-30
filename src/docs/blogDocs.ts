@@ -150,7 +150,6 @@ const updateBlog = {
       },
     },
   },
-
   responses: {
     "200": {
       description: "Blog post updated successfully",
@@ -172,6 +171,11 @@ const updateBlog = {
       description: "Blog post not found",
     },
   },
+  security: [
+    {
+      tokenAuth: [],
+    },
+  ],
 };
 
 const deleteBlog = {
@@ -230,13 +234,13 @@ export const BlogDocs = {
   },
 
   "/api/blogs/edit/662e3ddc10dec28a11af342c": {
-    get: {
+    put: {
       ...updateBlog,
     },
   },
 
   "/api/blogs/delete/": {
-    get: {
+    delete: {
       ...deleteBlog,
     },
   },

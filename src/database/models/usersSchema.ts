@@ -3,6 +3,8 @@ interface users extends Document {
   email: { type: string; required: true };
   Password: string;
   role: string;
+  otp: string;
+  verified: string;
 }
 const userSchema: Schema<users> = new Schema({
   email: {
@@ -15,6 +17,8 @@ const userSchema: Schema<users> = new Schema({
     required: true,
   },
   role: String,
+  otp: String,
+  verified: String,
 });
 const usersModel = mongoose.model<users>("Users", userSchema);
 export { usersModel };
