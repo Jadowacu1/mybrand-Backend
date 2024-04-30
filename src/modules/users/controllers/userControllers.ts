@@ -6,6 +6,7 @@ import {
   deletingUser,
   verify,
   updateStatus,
+  verifiedAcc,
 } from "../repository/userRepository";
 
 import { usersModel } from "../../../database/models/usersSchema";
@@ -126,12 +127,20 @@ const deleteUser = async (req: Request, res: Response) => {
 
 const verification = async (req: Request, res: Response) => {
   const { email, otp } = req.body;
-  const data = await verify(email, otp);
-  if (data) {
-    const update = await updateStatus(email, otp);
-    if (update) {
-      return res.status(200).json("Account Verified");
+  const verifiedUser = await verifiedAcc(email);
+  if (!verifiedUser) {
+    const data = await verify(email, otp);
+
+    if (data) {
+      const update = await updateStatus(email, otp);
+      if (update) {
+        return res.status(200).json("Account is now verified");
+      }
+    } else {
+      return res.status(400).json("Invalid Otp");
     }
+  } else {
+    return res.status(400).json("Already Verified");
   }
 };
 export { createUser, login, viewUsers, deleteUser, verification };
