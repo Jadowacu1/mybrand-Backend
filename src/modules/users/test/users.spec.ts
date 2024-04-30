@@ -20,7 +20,7 @@ describe("User Registration API", () => {
       .post("/api/users/registration")
       .send(userData);
     expect(response.status).to.equal(200);
-    expect(response.body).to.equal("Account Is Created");
+    expect(response.body).to.equal("Check Your Email Inbox");
   });
   it("should return conflict  if user email  already exists", async () => {
     const userData = {
