@@ -4,13 +4,13 @@ import express, { Express } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import swaggerui from "swagger-ui-express";
-import { swaggerdocs } from "./docs/swaggerDocs";
+import swaggerSetup from "./utilities/swaggerConfig";
 
 dotenv.config();
-const PORT = process.env.PORT;
+const PORT = 3000;
 const app: Express = express();
 
-app.use("/doc", swaggerui.serve, swaggerui.setup(swaggerdocs));
+swaggerSetup(app);
 
 app.use(express.json());
 app.use(cors());

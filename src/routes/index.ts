@@ -2,7 +2,7 @@ import Router from "express";
 import usersRouter from "./usersRouter";
 import messageRouter from "./messageRoutes";
 import blogsRouter from "./blogRouters";
-import { validateToken } from "../utilities/tokenVerify";
+// import { admin,client } from "../utilities/tokenVerify";
 import { connection } from "../database/config/connection";
 
 connection();

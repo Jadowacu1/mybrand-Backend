@@ -4,8 +4,11 @@ const insertIntoDb = async (body: any) => {
   return await usersModel.create(body);
 };
 
-const exstingUser = async (email: string) => {
+const verifiedUser = async (email: string) => {
   return await usersModel.findOne({ email: email, verified: "yes" });
+};
+const exstingUser = async (email: string) => {
+  return await usersModel.findOne({ email: email });
 };
 interface query {
   role: string;
@@ -35,4 +38,5 @@ export {
   verify,
   updateStatus,
   verifiedAcc,
+  verifiedUser,
 };

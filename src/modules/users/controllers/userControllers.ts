@@ -7,6 +7,7 @@ import {
   verify,
   updateStatus,
   verifiedAcc,
+  verifiedUser,
 } from "../repository/userRepository";
 
 import { usersModel } from "../../../database/models/usersSchema";
@@ -59,7 +60,7 @@ const createUser = async (req: Request, res: Response) => {
       const info = await transporter.sendMail({
         from: {
           name: `JadoForge`,
-          // address: `${email}`,
+          address: `${email}`,
         },
         to: `${email}`, // list of receivers
         subject: "Email Verification Code", // Subject line
@@ -89,9 +90,13 @@ const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const fetchUser = await exstingUser(email);
   if (!fetchUser) {
-    return res.status(400).json("Your Account is not verified");
+    return res.status(400).json("Email or Password is incorrect");
   }
   if (fetchUser) {
+    const verifiedUsers = await verifiedUser(email);
+    if (!verifiedUsers) {
+      return res.status(400).json("You account is not verified");
+    }
     const fetchedPassword = fetchUser.Password;
     const role = fetchUser.role;
     bycrpt.compare(password, fetchedPassword, (err, results) => {
@@ -137,7 +142,7 @@ const verification = async (req: Request, res: Response) => {
         return res.status(200).json("Account is now verified");
       }
     } else {
-      return res.status(400).json("Invalid Otp");
+      return res.status(400).json("No User or Invalid Token");
     }
   } else {
     return res.status(400).json("Already Verified");

@@ -4,14 +4,10 @@ import {
   recordMessage,
   viewMessages,
 } from "../modules/messages/controllers/messageController";
-import { validateToken } from "../utilities/tokenVerify";
+import { admin } from "../utilities/tokenVerify";
 const messageRouter = Router();
 messageRouter.post("/recordingMessage", recordMessage);
-messageRouter.get("/viewMessages", validateToken, viewMessages);
-messageRouter.delete(
-  "/deletingMessage/:messageId",
-  validateToken,
-  deleteMessage
-);
+messageRouter.get("/viewMessages", admin, viewMessages);
+messageRouter.delete("/deletingMessage/:messageId", admin, deleteMessage);
 
 export default messageRouter;

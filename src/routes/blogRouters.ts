@@ -6,12 +6,12 @@ import {
   updatingBlog,
   readingSingle,
 } from "../modules/blogs/controller/blogController";
-import { validateToken } from "../utilities/tokenVerify";
+import { admin, client } from "../utilities/tokenVerify";
 import { readSingle } from "../modules/blogs/repository/blogsRepo";
 const blogsRouter = Router();
-blogsRouter.post("/create", creatingBlog);
-blogsRouter.get("/read", readingBlogs);
-blogsRouter.get("/read/:blogId", readingSingle);
-blogsRouter.delete("/delete/:blogId", validateToken, deletingBlog);
-blogsRouter.put("/edit/:blogId", validateToken, updatingBlog);
+blogsRouter.post("/create", admin, creatingBlog);
+blogsRouter.get("/read", client, readingBlogs);
+blogsRouter.get("/read/:blogId", client, readingSingle);
+blogsRouter.delete("/delete/:blogId", admin, deletingBlog);
+blogsRouter.put("/edit/:blogId", admin, updatingBlog);
 export default blogsRouter;
